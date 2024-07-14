@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Конвертер валюты</string>
+    <string name="conv1">Конвертер валюты в доллары </string>
+    <string name="walletselect">Выберите валюту:</string>
+    <string name="wallets">Валюта</string>
+    <string name="rub">Рубль</string>
+    <string name="euro">Евро</string>
+    <string name="sum">Сум</string>
+    <string name="dollar">Дол. в суммы</string>
+    <string name="reset">Очистить</string>
+    <string name="beginsumm">0.0</string>
+    <string name="url">https://api.tinkoff.ru/v1/</string>
+</resources>
