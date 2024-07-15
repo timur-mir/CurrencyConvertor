@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#72D897">
+    android:background="@drawable/m1">
+<!--    android:background="#72D897">-->
     <!--    android:background="#729BD8">-->
     <!--    android:background="#1D9C52">-->
     <!--    android:background="#CED88469">-->
@@ -24,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="30dp"
-            android:text="Курс доллара на сегодня:"
-            android:textColor="#9005A8"
+            android:text="                            Курс на сегодня:"
+            android:textColor="#E58CF4"
             android:textSize="16sp" />
 
         <TextView
@@ -33,8 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="#C9B20303"
-            android:textSize="20sp" />
+            android:textColor="#F8F86B89"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <TextView
@@ -44,7 +45,7 @@
         android:layout_marginTop="56dp"
         android:gravity="center"
         android:text="@string/conv1"
-        android:textColor="#024905"
+        android:textColor=    "#73DCEA"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.467"
@@ -58,7 +59,7 @@
         android:layout_marginStart="46dp"
         android:layout_marginTop="50dp"
         android:text="@string/walletselect"
-        android:textColor="#024905"
+        android:textColor=    "#73DCEA"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -109,7 +110,7 @@
         android:layout_marginStart="46dp"
         android:layout_marginTop="156dp"
         android:text="Введите сумму:"
-        android:textColor="#024905"
+        android:textColor=    "#73DCEA"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -134,8 +135,8 @@
         android:layout_marginTop="140dp"
         android:hint="количество денег"
         android:inputType="numberDecimal"
-        android:textColor="#024905"
-        android:textColorHint="#024905"
+        android:textColor=    "#73DCEA"
+        android:textColorHint=    "#73DCEA"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView3"
@@ -163,7 +164,7 @@
 <!--        android:hint="номер телефона"-->
 <!--        android:inputType="phone"-->
 <!--        android:singleLine="true"-->
-<!--        android:textColorHint="#024905"-->
+<!--        android:textColorHint=    "#73DCEA"-->
 <!--        android:visibility="invisible"-->
 <!--        app:layout_constraintBottom_toBottomOf="parent"-->
 <!--        app:layout_constraintEnd_toEndOf="@+id/linearLayout"-->
@@ -191,7 +192,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/beginsumm"
-        android:textColor="#024905"
+        android:textColor="#73DCEA"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/button2"
         app:layout_constraintTop_toBottomOf="@+id/button2" />

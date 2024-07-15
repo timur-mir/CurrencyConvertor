@@ -18,10 +18,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-//    val repo: CurrencyConverterRepo,
+
     val getCurrencyUseCase: GetCurrencyUseCase )
     : ViewModel() {
-
 
     var data = PayLoadDto(null, ArrayList<RatesDto>())
 
