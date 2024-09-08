@@ -18,12 +18,12 @@ fun Double.format(fractDigits:Int):String{
     return df.format(this)
 }
 
-fun CurrenciesWorld.convertToUSD(amount: Double): Double {
+fun CurrenciesWorld.convertToUSD(amount: Double,selectedValuteCur:Double): Double {
     return when (this) {
-        CurrenciesWorld.RUBLE -> amount /100
-        CurrenciesWorld.EURO -> (amount *10 /10)
-        CurrenciesWorld.DOLLAR -> amount*10
-        CurrenciesWorld.SUMUZ -> amount /100
+        CurrenciesWorld.RUBLE -> amount /selectedValuteCur
+        CurrenciesWorld.EURO -> amount*selectedValuteCur
+        CurrenciesWorld.DOLLAR -> amount*selectedValuteCur
+        CurrenciesWorld.SUMUZ -> amount /selectedValuteCur
     }
 }
 val  CurrenciesWorld.checkNationalCurrency:Boolean

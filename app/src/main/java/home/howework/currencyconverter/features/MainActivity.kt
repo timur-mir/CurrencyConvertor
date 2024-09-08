@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                                                     makeVibrate()
                                                     Toast.makeText(
                                                         this@MainActivity,
-                                                        "Курс доллара в сумах :${it.payload.rates[12].sell!!}!",
+                                                        "Курс продажи доллара в сумах :${it.payload.rates[12].sell!!}!",
                                                         Toast.LENGTH_LONG
                                                     ).show();
                                                     binding.button2.isEnabled = false
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
                                                     makeVibrate()
                                                     Toast.makeText(
                                                         this@MainActivity,
-                                                        "Курс продажи доллара за сумы :${it.payload.rates[12].sell!!}!",
+                                                        "Курс продажи сума в долларах :${(it.payload.rates[12].sell!!)/100}!",
                                                         Toast.LENGTH_LONG
                                                     ).show();
                                                     binding.button2.isEnabled = false
@@ -202,18 +202,18 @@ class MainActivity : AppCompatActivity() {
                                         }
                                     }
                                     CurrencyConverter.countOnButtonClickWhenEuroRequest++
-                                    mainViewModel.reloadCurrency2("EUR", "RUB")
+                                    mainViewModel.reloadCurrency2("EUR", "USD")
                                     mainViewModel.response2
                                         .onEach {
-                                            if (it.payload.rates.size != 0 && CurrencyConverter.euroToRuble == 0.0 && item == "Евро") {
-                                                CurrencyConverter.euroToRuble =
+                                            if (it.payload.rates.size != 0 && CurrencyConverter.euroToDollar == 0.0 && item == "Евро") {
+                                                CurrencyConverter.euroToDollar=
                                                     it.payload.rates[12].sell!!
                                                 delay(200)
                                                 launch(Dispatchers.Main) {
                                                     makeVibrate()
                                                     Toast.makeText(
                                                         this@MainActivity,
-                                                        "Курс продажи евро :${it.payload.rates[12].sell!!}!",
+                                                        "Курс продажи евро в долларах :${it.payload.rates[12].sell!!}!",
                                                         Toast.LENGTH_SHORT
                                                     ).show();
                                                     binding.button2.isEnabled = false
@@ -320,7 +320,7 @@ class MainActivity : AppCompatActivity() {
                         virtualWalletsClon.addMoney(CurrenciesWorld.RUBLE, wallets!!)
                         if (virtualWalletsClon.rub != 0.0) {
                             common =
-                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.RUBLE) * 10) / 10.0
+                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.RUBLE,CurrencyConverter.dollarToRuble) * 10) / 10.0
                             if (common >= 1) {
                                 //  val digitsf=common.toBigDecimal().toPlainString()
                                 val digitsf = common
@@ -328,7 +328,7 @@ class MainActivity : AppCompatActivity() {
                                 binding.textView4.text = "${stringDig} дол."
 
                             } else {
-                                val digitsf = common
+                                val digitsf = common*100
                                 val stringDig = digitsf.format(2)
                                 binding.textView4.text = "${stringDig} цент."
                             }
@@ -345,14 +345,14 @@ class MainActivity : AppCompatActivity() {
                         virtualWalletsClon.addMoney(CurrenciesWorld.EURO, wallets!!)
                         if (virtualWalletsClon.eur != 0.0) {
                             common =
-                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.EURO) * 10) / 10.0
+                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.EURO,CurrencyConverter.euroToDollar) * 10) / 10.0
                             if (common >= 1) {
                                 val digitsf = common
                                 val stringDig = digitsf.format(2)
                                 binding.textView4.text = "${stringDig} дол."
                             } else {
 
-                                val digitsf = common
+                                val digitsf = common*100
                                 val stringDig = digitsf.format(2)
                                 binding.textView4.text = "${stringDig} цент."
                             }
@@ -369,7 +369,7 @@ class MainActivity : AppCompatActivity() {
                         virtualWalletsClon.addMoney(CurrenciesWorld.DOLLAR, wallets!!)
                         if (virtualWalletsClon.usd != 0.0) {
                             common =
-                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.DOLLAR) * 10) / 10.0
+                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.DOLLAR,CurrencyConverter.sumToDollar) * 10) / 10.0
                             if (common >= 1) {
                                 val digitsf = common
                                 val stringDig = digitsf.format(2)
@@ -392,13 +392,13 @@ class MainActivity : AppCompatActivity() {
                         virtualWalletsClon.addMoney(CurrenciesWorld.SUMUZ, wallets!!)
                         if (virtualWalletsClon.uzs != 0.0) {
                             common =
-                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.SUMUZ) * 10) / 10.0
+                                (virtualWalletsClon.moneyInUSD(CurrenciesWorld.SUMUZ,CurrencyConverter.sumToDollar) * 10) / 10.0
                             if (common >= 1) {
                                 val digitsf = common
                                 val stringDig = digitsf.format(2)
                                 binding.textView4.text = "${stringDig} дол."
                             } else {
-                                val digitsf = common
+                                val digitsf = common*100
                                 val stringDig = digitsf.format(2)
                                 binding.textView4.text = "${stringDig} цент."
                             }
@@ -472,7 +472,7 @@ class MainActivity : AppCompatActivity() {
         var flagSnackbarUseReceiver=false
         var curValue: Double = 0.0
         var dollarToRuble: Double = 0.0
-        var euroToRuble = 0.0
+        var euroToDollar = 0.0
         var sumToDollar = 0.0
         var countOnButtonClickWhenDollarRequest = 0
         var countOnButtonClickWhenEuroRequest = 0

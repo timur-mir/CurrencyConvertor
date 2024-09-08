@@ -38,16 +38,16 @@ sealed class Wallets() {
             }
         }
 
-        override fun moneyInUSD(item:CurrenciesWorld): Double {
+        override fun moneyInUSD(item:CurrenciesWorld,cur:Double): Double {
             when (item) {
                 CurrenciesWorld.EURO->{if (eur!=0.0){
-                    totalAmount=CurrenciesWorld.EURO.convertToUSD(eur)}}
+                    totalAmount=CurrenciesWorld.EURO.convertToUSD(eur,cur)}}
                 CurrenciesWorld.RUBLE->{if (rub!=0.0){
-                    totalAmount=CurrenciesWorld.RUBLE.convertToUSD(rub)}}
+                    totalAmount=CurrenciesWorld.RUBLE.convertToUSD(rub,cur)}}
                 CurrenciesWorld.DOLLAR->{if (usd!=0.0){
-                    totalAmount=CurrenciesWorld.DOLLAR.convertToUSD(usd)}}
+                    totalAmount=CurrenciesWorld.DOLLAR.convertToUSD(usd,cur)}}
                 CurrenciesWorld.SUMUZ->{if (uzs!=0.0){
-                    totalAmount=CurrenciesWorld.SUMUZ.convertToUSD(uzs)}}
+                    totalAmount=CurrenciesWorld.SUMUZ.convertToUSD(uzs,cur)}}
             }
             return totalAmount
         }
@@ -136,5 +136,5 @@ sealed class Wallets() {
 //
 //    }
 
-    abstract fun moneyInUSD(item:CurrenciesWorld): Double
+    abstract fun moneyInUSD(item:CurrenciesWorld,cur:Double): Double
 }
