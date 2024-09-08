@@ -21,6 +21,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import home.howework.currencyconverter.features.MainActivity.CurrencyConverter.flagSnackbarUseReceiver
 import home.howework.currencyconverter.utils.CurrenciesWorld
 import home.howework.currencyconverter.utils.format
 import home.howework.currencyconverter.utils.hideKeyBoard
@@ -96,7 +97,6 @@ class MainActivity : AppCompatActivity() {
                                     }
                                     CurrencyConverter.countOnButtonClickWhenDollarRequest++
                                     mainViewModel.reloadCurrency3("USD", "UZS")
-
                                     mainViewModel.response3
                                         .onEach {
                                             if (it.payload.rates.size != 0 && CurrencyConverter.sumToDollar == 0.0) {
@@ -125,7 +125,6 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             1 -> {
-
                                 validate()
                             }
                         }
@@ -261,9 +260,11 @@ class MainActivity : AppCompatActivity() {
                     if (mainViewModel._errorInfo.value.isNotEmpty()) {
                         mainViewModel.errorInfo.collect {
                             mainViewModel._errorInfo.value = ""
+                            if(!flagSnackbarUseReceiver){
+                                flagSnackbarUseReceiver=true
                             Snackbar.make(
                                 binding.root,
-                                "Сеть недоступна",
+                                "Сеть недоступна,нед подключения к сети ",
                                 Snackbar.LENGTH_INDEFINITE
                             )
                                 .setActionTextColor(Color.WHITE)
@@ -275,6 +276,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 .show()
                         }
+                            }
                     }
                 }
 
@@ -447,21 +449,27 @@ class MainActivity : AppCompatActivity() {
             if (intent.action == ConnectivityManager.CONNECTIVITY_ACTION) {
                 val connectivity =
                     intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
-                if (connectivity) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Соединение с wifi или с сетью отсутствует( Некоторые функции могут не работать",
-                        Toast.LENGTH_LONG
+           }
+                if(flagSnackbarUseReceiver) {
+                    Snackbar.make(
+                        binding.root,
+                        "Сеть недоступна",
+                        Snackbar.LENGTH_INDEFINITE
                     )
-                        .show();
+                        .setActionTextColor(Color.WHITE)
+                        .setBackgroundTint((Color.RED))
+                        .setAction("Перезапустить") {
+                            lifecycleScope.launch {
+                                showLastCurrency()
+                            }
+                        }
+                        .show()
                 }
-
             }
-        }
-
     }
 
     object CurrencyConverter {
+        var flagSnackbarUseReceiver=false
         var curValue: Double = 0.0
         var dollarToRuble: Double = 0.0
         var euroToRuble = 0.0

@@ -70,7 +70,6 @@ class MainViewModel@Inject constructor(
                 if (response != null) {
                     _response.value = response
                     Log.d("TTM","Ответ: ${response}")
-                    _errorInfo.value=""
                 }
                 else { _errorInfo.value="Ошибка на сервере"}
 
