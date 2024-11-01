@@ -258,32 +258,31 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.reloadCurrency("USD", "RUB")
                 launch(Dispatchers.Main) {
                     delay(1000)
-                    if (mainViewModel._errorInfo.value !="") {
-                        mainViewModel.errorInfo.collect {
-                            Snackbar.make(
-                                binding.root,
-                                "$it",
-                                Snackbar.LENGTH_INDEFINITE
-                            )
-                                .setActionTextColor(Color.WHITE)
-                                .setBackgroundTint((Color.BLUE))
-                                .setAction("Перезапустить") {
-                                    lifecycleScope.launch {
-                                        showLastCurrency()
-                                        launch(Dispatchers.IO){
-                                            mainViewModel.setEmptyMessage()
+
+                        mainViewModel.errorInfo.collect { message ->
+                            if (message != "") {
+                                Snackbar.make(
+                                    binding.root,
+                                    "$message",
+                                    Snackbar.LENGTH_INDEFINITE
+                                )
+                                    .setActionTextColor(Color.WHITE)
+                                    .setBackgroundTint((Color.BLUE))
+                                    .setAction("Перезапустить") {
+                                        lifecycleScope.launch {
+
+                                            launch(Dispatchers.IO) {
+                                                mainViewModel.setEmptyMessage()
+                                            }
+                                            delay(200)
+                                            showLastCurrency()
                                         }
                                     }
-                                }
-                                .show()
+                                    .show()
                             }
-
-                    }
-
+                        }
 
                 }
-
-
 
                 mainViewModel.response
                     .onEach { response ->
@@ -303,7 +302,7 @@ class MainActivity : AppCompatActivity() {
                             else {
                                 Snackbar.make(
                                     binding.root,
-                                    "Результат неизвестен",
+                                    "Результат неизвестен...",
                                     Snackbar.LENGTH_SHORT
                                 )
                                     .setActionTextColor(Color.WHITE)
@@ -463,7 +462,7 @@ class MainActivity : AppCompatActivity() {
     inner class WifiReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == ConnectivityManager.CONNECTIVITY_ACTION) {
-                val flagSnackbarUseReceiver =
+                 flagSnackbarUseReceiver =
                     intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
 
            }
