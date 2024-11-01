@@ -255,16 +255,14 @@ class MainActivity : AppCompatActivity() {
     private suspend fun showLastCurrency() {
         val job = lifecycleScope.launch {
             scope.launch {
+                mainViewModel.reloadCurrency("USD", "RUB")
                 launch(Dispatchers.Main) {
-                    delay(4000)
-                    if (mainViewModel._errorInfo.value.isNotEmpty()) {
+                    delay(1000)
+                    if (mainViewModel._errorInfo.value !="") {
                         mainViewModel.errorInfo.collect {
-                            mainViewModel._errorInfo.value = ""
-                            if(!flagSnackbarUseReceiver){
-                                flagSnackbarUseReceiver=true
                             Snackbar.make(
                                 binding.root,
-                                "Сеть недоступна,нед подключения к сети ",
+                                "$it",
                                 Snackbar.LENGTH_INDEFINITE
                             )
                                 .setActionTextColor(Color.WHITE)
@@ -272,31 +270,49 @@ class MainActivity : AppCompatActivity() {
                                 .setAction("Перезапустить") {
                                     lifecycleScope.launch {
                                         showLastCurrency()
+                                        launch(Dispatchers.IO){
+                                            mainViewModel.setEmptyMessage()
+                                        }
                                     }
                                 }
                                 .show()
-                        }
                             }
+
                     }
+
+
                 }
 
-                mainViewModel.reloadCurrency("USD", "RUB")
+
 
                 mainViewModel.response
                     .onEach { response ->
                         val inv = response
-                        delay(20)
-                        launch(Dispatchers.Main) {
+                        delay(400)
+                       launch(Dispatchers.Main) {
+
                             if (response != null) {
-                                if (response.payload.rates.size != 0) {
+                                if (response.payload.rates.isNotEmpty()) {
                                     CurrencyConverter.curValue = response.payload.rates[12].sell!!
                                     binding.price.text =
-                                        " ${CurrencyConverter.curValue.toString()} руб "
+                                        " ${response.payload.rates[12].sell!!} руб "
                                     CurrencyConverter.dollarToRuble = CurrencyConverter.curValue
                                     makeVibrate()
                                 }
                             }
-                            cancel()
+                            else {
+                                Snackbar.make(
+                                    binding.root,
+                                    "Результат неизвестен",
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setActionTextColor(Color.WHITE)
+                                    .setBackgroundTint((Color.RED))
+
+                                    .show()
+                            }
+
+                           // cancel()
                         }
                     }.launchIn(this)
             }
@@ -447,9 +463,11 @@ class MainActivity : AppCompatActivity() {
     inner class WifiReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == ConnectivityManager.CONNECTIVITY_ACTION) {
-                val connectivity =
+                val flagSnackbarUseReceiver =
                     intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+
            }
+
                 if(flagSnackbarUseReceiver) {
                     Snackbar.make(
                         binding.root,

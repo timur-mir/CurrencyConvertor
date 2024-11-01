@@ -59,10 +59,11 @@ class MainViewModel@Inject constructor(
     )
     val response3 = _response3.asStateFlow()
 
-    // var scope = CoroutineScope(Job() + Dispatchers.IO)
     val _errorInfo = MutableStateFlow("")
     val errorInfo= _errorInfo.asStateFlow()
-
+fun setEmptyMessage(){
+    _errorInfo.value = ""
+}
     fun reloadCurrency(from:String,to:String) {
         viewModelScope.launch {
             try {
