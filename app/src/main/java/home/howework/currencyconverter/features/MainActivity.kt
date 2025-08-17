@@ -1,5 +1,6 @@
 package home.howework.currencyconverter.features
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -31,7 +32,6 @@ import home.howework.currensyconverter.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -48,13 +48,19 @@ class MainActivity : AppCompatActivity() {
     val virtualWalletsClon = home.howework.presentation.utils.Wallets.VirtualWallets()
     private val mainViewModel: home.howework.presentation.vm.MainViewModel by viewModels<home.howework.presentation.vm.MainViewModel>()
     var scope = CoroutineScope(Job() + Dispatchers.Default)
-
+       override fun onResume() {
+        super.onResume()
+        val intent = Intent(this, CurrencyService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        }
+    }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        BuildConfig.DEBUG
+           BuildConfig.DEBUG
         makeVibrate()
         val filter = IntentFilter().apply { addAction(ConnectivityManager.CONNECTIVITY_ACTION) }
         val receiverWifi = WifiReceiver()

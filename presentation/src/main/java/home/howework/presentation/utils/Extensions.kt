@@ -2,7 +2,6 @@ package home.howework.currencyconverter.utils
 
 import android.text.Editable
 import android.widget.EditText
-import home.howework.currencyconverter.utils.CurrenciesWorld
 import java.text.DecimalFormat
 
 fun Editable.toDouble() = toString().toDouble()
